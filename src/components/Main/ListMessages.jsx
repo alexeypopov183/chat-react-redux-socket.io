@@ -1,9 +1,14 @@
 import React from 'react';
+import Message from "./Message";
+import {useSelector} from "react-redux";
 
 const ListMessages = () => {
+  const messages = useSelector(state => state.messageReducer)
   return (
     <section className="main__messages">
-      message
+      {messages.map(message => (
+        <Message messageProp={message}/>
+      ))}
     </section>
   );
 };

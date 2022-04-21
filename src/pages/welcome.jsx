@@ -1,17 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import getRandomName from "../functions/getRandomName";
+import React from 'react';
 
 const Welcome = ({changeOpen}) => {
-  const [userName, setUserName] = useState('');
 
   const openChat = () => {
     changeOpen(true);
-    console.log(userName)
   };
-
-  useEffect(() => {
-    setUserName(getRandomName());
-  }, []);
 
   return (
     <div className="welcome-block">

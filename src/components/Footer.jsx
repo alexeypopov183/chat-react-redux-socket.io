@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {addMessage} from "../redux/actions";
 
-const Footer = () => {
+const Footer = ({userName}) => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
   // TODO add to dispatch id user!
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addMessage(message));
+    dispatch(addMessage(message, userName));
   }
 
   return (

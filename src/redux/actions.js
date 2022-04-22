@@ -6,7 +6,7 @@ export const addMessage = (message, user) => {
     type: 'ADD_MESSAGE',
     message,
     user,
-    id: user + uniqIdMessage++,
+    id: uniqIdMessage++,
   }
 }
 export const deleteMessage = (id) => {
@@ -19,7 +19,7 @@ export const addUser = (user) => {
   return {
     type: 'ADD_USER',
     user,
-    id: user + uniqIdUser++,
+    id: uniqIdUser++,
   }
 }
 export const deleteUser = (id) => {

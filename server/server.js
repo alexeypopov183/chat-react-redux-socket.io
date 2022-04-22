@@ -43,7 +43,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('disconnect', chat)
     if (chat.size) {
-      console.log(chat)
+      console.log('chat' + chat)
       chat.forEach(el => el.delete(socket.id));
       const users = [...chat.get('users').values()];
       io.sockets.emit('SAVE_USERS', users);

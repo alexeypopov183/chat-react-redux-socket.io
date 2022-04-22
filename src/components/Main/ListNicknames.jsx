@@ -2,14 +2,14 @@ import React from 'react';
 import {useSelector} from "react-redux";
 
 const ListNicknames = () => {
-  const users = useSelector(state => state.userReducer);
-  console.log(users)
+  const users = useSelector(state => state.userReducer.user);
 
   return (
     <section className="main__nicknames">
-      {users.map(user => (
-        <div key={user.id} className="nicknames__block">
-          {user.user}
+      <span className="main__nicknames-count">Онлайн: {users.length}</span>
+      {users && users.map((user, i) => (
+        <div key={user + i} className="main__nicknames-block">
+          {user}
         </div>
       ))}
     </section>

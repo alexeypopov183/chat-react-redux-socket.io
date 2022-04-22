@@ -10,17 +10,18 @@ const Welcome = ({changeOpen, changeName}) => {
 
   const openChat = async () => {
     const userName = getRandomName();
-
     const userDate = {
       userName
     }
     changeName(userName);
+
     await axios.post('http://localhost:4000', userDate)
     socket.emit('JOIN', userDate)
     socket.on('SAVE_USERS', users => {
       console.log('новый пользователь', users);
       dispatch(addUser(users));
     })
+
     changeOpen(true);
   };
 

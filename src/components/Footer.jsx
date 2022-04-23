@@ -19,8 +19,8 @@ const Footer = ({userName}) => {
   }
 
   const swapMessages = (socketMessage) => {
-    socket.emit('NEW_MESSAGE', socketMessage);
-    socket.on('NEW_MESSAGE', data => {
+    socket.emit('MESSAGE', socketMessage);
+    socket.on('MESSAGE', data => {
       dispatch(addMessage(data));
     });
   }

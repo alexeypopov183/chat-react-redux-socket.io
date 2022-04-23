@@ -11,8 +11,8 @@ const Message = ({messageProp, currentUser}) => {
 
   const deletedMessage = (id) => {
     if (userName === currentUser) {
-      socket.emit('DELETE_MESSAGE', id)
-      socket.on('DELETE_MESSAGE', data => {
+      socket.emit('MESSAGE', id)
+      socket.on('MESSAGE', data => {
         dispatch(addMessage(data));
       });
     }

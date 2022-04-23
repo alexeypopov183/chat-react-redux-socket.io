@@ -35,17 +35,13 @@ io.on('connection', (socket) => {
     io.sockets.emit('GET_DATA', users, messages);
   });
 
-  socket.on('NEW_MESSAGE', (data) => {
-    chat.get('messages').set(data.uniqId , data);
+  socket.on('MESSAGE', (data) => {
+    (typeof data === 'object')
+      ?  chat.get('messages').set(data.uniqId, data)
+      :  chat.get('messages').delete(data);
     const messages = [...chat.get('messages').values()];
-    io.sockets.emit('NEW_MESSAGE', messages)
-  });
-  //TODO связать удаление и новое через иф и сравнивать получаемую дату на тип объекта
-  socket.on('DELETE_MESSAGE', (data) => {
-    chat.get('messages').delete(data);
-    const messages = [...chat.get('messages').values()];
-    io.sockets.emit('DELETE_MESSAGE', messages)
-  });
+    io.sockets.emit('MESSAGE', messages);
+  })
 
   socket.on('disconnect', () => {
     if (chat.size) {

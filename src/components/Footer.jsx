@@ -18,11 +18,12 @@ const Footer = ({userName}) => {
     swapMessages(socketMessage);
   }
 
+  socket.on('MESSAGE', data => {
+    dispatch(addMessage(data));
+  });
+
   const swapMessages = (socketMessage) => {
     socket.emit('MESSAGE', socketMessage);
-    socket.on('MESSAGE', data => {
-      dispatch(addMessage(data));
-    });
   }
 
   return (

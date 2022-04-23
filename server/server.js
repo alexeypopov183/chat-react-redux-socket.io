@@ -27,7 +27,6 @@ app.post('/', (req, res) => {
 })
 
 io.on('connection', (socket) => {
-
   socket.on('JOIN', (data) => {
     socket.join(data);
     chat.get('users').set(socket.id, data.userName);
@@ -40,7 +39,13 @@ io.on('connection', (socket) => {
     chat.get('messages').set(data.uniqId , data);
     const messages = [...chat.get('messages').values()];
     io.sockets.emit('NEW_MESSAGE', messages)
-  })
+  });
+  //TODO связать удаление и новое через иф и сравнивать получаемую дату на тип объекта
+  socket.on('DELETE_MESSAGE', (data) => {
+    chat.get('messages').delete(data);
+    const messages = [...chat.get('messages').values()];
+    io.sockets.emit('DELETE_MESSAGE', messages)
+  });
 
   socket.on('disconnect', () => {
     if (chat.size) {
@@ -48,9 +53,8 @@ io.on('connection', (socket) => {
       const users = [...chat.get('users').values()];
       io.sockets.emit('GET_DATA', users);
     }
-  })
+  });
 });
-
 
 server.listen(4000, () => {
   console.log('listening on *:4000');

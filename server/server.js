@@ -23,34 +23,39 @@ app.post('/', (req, res) => {
   //?
   if (!chat.size) {
     chat
-      .set('users', new Map)
-      .set('messages', new Map)
+      .set('users', new Map())
+      .set('messages', new Map([]))
   }
   res.send();
   // console.log(req.body);
 })
 
 io.on('connection', (socket) => {
-  console.log('a user connected', socket.id);
+
   socket.on('JOIN', (data) => {
     socket.join(data);
     chat.get('users').set(socket.id, data.userName);
     const users = [...chat.get('users').values()];
-    io.sockets.emit('SAVE_USERS', users);
-    console.log(chat)
+    const messages = [...chat.get('messages').values()];
+    io.sockets.emit('GET_DATA', users, messages);
+  });
 
+  socket.on('NEW_MESSAGE', (data) => {
+    chat.get('messages').set(data.uniqId , data);
+    const messages = [...chat.get('messages').values()];
+    io.sockets.emit('NEW_MESSAGE', messages)
   })
+
   socket.on('disconnect', () => {
-    console.log('disconnect', chat)
     if (chat.size) {
-      console.log('chat' + chat)
       chat.forEach(el => el.delete(socket.id));
       const users = [...chat.get('users').values()];
-      io.sockets.emit('SAVE_USERS', users);
-      console.log('user disconnected', socket.id, users);
+      io.sockets.emit('GET_DATA', users);
     }
   })
 });
+
+
 
 server.listen(4000, () => {
   console.log('listening on *:4000');

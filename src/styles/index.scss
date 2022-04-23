@@ -23,6 +23,7 @@
   border: 1px solid red;
   display: grid;
   grid-template-columns: 200px 1fr;
+  overflow: auto;
 
   &__nicknames {
     border: 2px solid black;

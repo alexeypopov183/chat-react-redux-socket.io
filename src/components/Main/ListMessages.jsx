@@ -6,8 +6,8 @@ const ListMessages = () => {
   const messages = useSelector(state => state.messageReducer)
   return (
     <section className="main__messages">
-      {messages.map(message => (
-        <Message messageProp={message}/>
+      {messages.map((message) => (
+        <Message key={message.uniqId} messageProp={message}/>
       ))}
     </section>
   );

@@ -6,7 +6,7 @@ const ListNicknames = () => {
 
   return (
     <section className="main__nicknames">
-      <span className="main__nicknames-count">Онлайн: {users.length}</span>
+      <span className="main__nicknames-count">Онлайн: {users && users.length}</span>
       {users && users.map((user, i) => (
         <div key={user + i} className="main__nicknames-block">
           {user}

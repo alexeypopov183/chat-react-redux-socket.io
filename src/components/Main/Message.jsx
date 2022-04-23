@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {deleteMessage} from "../../redux/actions";
 
 const Message = ({messageProp}) => {
-  const {user, message, id} = messageProp;
+  const {userName, message, uniqId} = messageProp;
   const dispatch = useDispatch();
 
   const deletedMessage = (id) => {
@@ -12,7 +12,7 @@ const Message = ({messageProp}) => {
 
   return (
     <div className="message-block">
-      {user}: {message} <span onClick={() => deletedMessage(id)}>x</span>
+      {userName}: {message} <span onClick={() => deletedMessage(uniqId)}>x</span>
     </div>
   );
 };

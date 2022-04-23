@@ -1,12 +1,10 @@
-let uniqIdMessage = 0;
+
 let uniqIdUser = 0;
 
-export const addMessage = (message, user) => {
+export const addMessage = (message, user, id) => {
   return {
     type: 'ADD_MESSAGE',
     message,
-    user,
-    id: uniqIdMessage++,
   }
 }
 export const deleteMessage = (id) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import socket from "../socket";
-import {addUser} from "../redux/actions";
+import {addMessage, addUser} from "../redux/actions";
 import {useDispatch} from "react-redux";
 import getRandomName from "../functions/getRandomName";
 import axios from "axios";
@@ -10,16 +10,16 @@ const Welcome = ({changeOpen, changeName}) => {
 
   const openChat = async () => {
     const userName = getRandomName();
-    const userDate = {
+    const socketUser = {
       userName
     }
     changeName(userName);
 
-    await axios.post('http://localhost:4000', userDate)
-    socket.emit('JOIN', userDate)
-    socket.on('SAVE_USERS', users => {
-      console.log('новый пользователь', users);
+    await axios.post('http://localhost:4000', socketUser)
+    socket.emit('JOIN', socketUser)
+    socket.on('GET_DATA', (users, messages) => {
       dispatch(addUser(users));
+      dispatch(addMessage(messages));
     })
 
     changeOpen(true);

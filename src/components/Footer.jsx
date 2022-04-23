@@ -1,14 +1,24 @@
 import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {addMessage} from "../redux/actions";
+import socket from "../socket";
 
 const Footer = ({userName}) => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
-  // TODO add to dispatch id user!
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addMessage(message, userName));
+
+    const socketMessage = {
+      message: message,
+      userName: userName,
+      uniqId: `${userName}:${Date.now()}`
+    }
+    socket.emit('NEW_MESSAGE', socketMessage)
+    socket.on('NEW_MESSAGE', data => {
+      dispatch(addMessage(data));
+    })
   }
 
   return (

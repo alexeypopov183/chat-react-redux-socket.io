@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {useDispatch} from "react-redux";
-import {addMessage} from "../redux/actions";
 import socket from "../socket";
+import {useDispatch} from "react-redux";
+
+import {addMessage} from "../redux/actions";
 
 const Footer = ({userName}) => {
   const dispatch = useDispatch();
@@ -9,16 +10,19 @@ const Footer = ({userName}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const socketMessage = {
       message: message,
       userName: userName,
-      uniqId: `${userName}:${Date.now()}`
-    }
-    socket.emit('NEW_MESSAGE', socketMessage)
+      uniqId: `${userName}:${Date.now()}`,
+    };
+    swapMessages(socketMessage);
+  }
+
+  const swapMessages = (socketMessage) => {
+    socket.emit('NEW_MESSAGE', socketMessage);
     socket.on('NEW_MESSAGE', data => {
       dispatch(addMessage(data));
-    })
+    });
   }
 
   return (

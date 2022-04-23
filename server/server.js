@@ -8,7 +8,6 @@ const io = new Server(server, {
     origin: '*',
   }
 });
-
 app.use(require('cors')());
 app.use(express.json());
 
@@ -19,15 +18,12 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', (req, res) => {
-  // const {userName} = req.body;
-  //?
   if (!chat.size) {
     chat
       .set('users', new Map())
       .set('messages', new Map([]))
   }
   res.send();
-  // console.log(req.body);
 })
 
 io.on('connection', (socket) => {
@@ -54,7 +50,6 @@ io.on('connection', (socket) => {
     }
   })
 });
-
 
 
 server.listen(4000, () => {

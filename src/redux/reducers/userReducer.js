@@ -4,7 +4,6 @@ export const userReducer = (state = [], action) => {
       return (
         {
           user: action.user,
-          id: action.id,
         }
       )
     case 'DELETE_USER':

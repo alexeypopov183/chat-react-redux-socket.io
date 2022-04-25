@@ -12,16 +12,16 @@ export const deleteMessage = (id) => {
   }
 }
 
-export const addUser = (user) => {
+export const addUser = (payload) => {
   return {
     type: 'ADD_USER',
-    user,
+    payload,
   }
 }
 
-export const deleteUser = (id) => {
+export const deleteUser = (name) => {
   return {
-    type: 'ADD_USER',
-    id,
+    type: 'DELETE_USER',
+    name,
   }
 }

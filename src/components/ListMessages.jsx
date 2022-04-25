@@ -5,7 +5,6 @@ import Message from "./Message";
 
 const ListMessages = ({userName}) => {
   const messages = useSelector(state => state.messageReducer);
-
   return (
     <section className="main__messages">
       {messages.map((message) => (

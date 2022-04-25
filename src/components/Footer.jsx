@@ -9,8 +9,6 @@ const Footer = ({userName}) => {
   const [message, setMessage] = useState('');
   const [encodeImage, setEncodeImage] = useState(null);
 
-  //TODO let костыль - исправить в редаксе
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const socketMessage = {

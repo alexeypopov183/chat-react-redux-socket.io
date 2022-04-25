@@ -29,10 +29,11 @@ app.post('/', (req, res) => {
 io.on('connection', (socket) => {
   socket.on('JOIN', (data) => {
     socket.join(data);
-    chat.get('users').set(socket.id, data.userName);
+    chat.get('users').set(socket.id, {name: data.userName, img: data.img});
     const users = [...chat.get('users').values()];
     const messages = [...chat.get('messages').values()];
-    io.sockets.emit('GET_DATA', users, messages);
+    const join = true;
+    io.sockets.emit('GET_DATA', users, messages, join);
   });
 
   socket.on('MESSAGE', (data) => {
@@ -45,9 +46,9 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     if (chat.size) {
+      const user = chat.get('users').get(socket.id).name;
       chat.forEach(el => el.delete(socket.id));
-      const users = [...chat.get('users').values()];
-      io.sockets.emit('GET_DATA', users);
+      io.sockets.emit('CHANGE_DATA', user);
     }
   });
 });

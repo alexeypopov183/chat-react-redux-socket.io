@@ -1,16 +1,16 @@
-import React, {useState} from "react";
+import React from "react";
 
 import Welcome from "./pages/welcome";
 import Chat from "./pages/chat";
+import {useSelector} from "react-redux";
 
 function App() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [name, setName] = useState('');
 
+  const {join} = useSelector(state => state.userReducer)
   return (
     <>
-      {isOpen ? <Chat userName={name} />
-        : <Welcome changeName={setName} changeOpen={setIsOpen} />}
+      {join ? <Chat />
+        : <Welcome />}
     </>
   );
 }

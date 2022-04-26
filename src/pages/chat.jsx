@@ -8,16 +8,17 @@ import {useSelector} from "react-redux";
 
 const Chat = () => {
   const {user, users} = useSelector(state => state.userReducer);
-  const {userName} = user;
+  const {userName} = user.name;
+  const {img} = user;
 
   return (
     <div className="container">
-      <Header userName={userName}/>
+      <Header img={img} userName={userName}/>
       <main className="main">
         <ListNicknames users={users}/>
         <ListMessages userName={userName}/>
       </main>
-      <Footer userName={userName}/>
+      <Footer img={img} userName={userName}/>
     </div>
   );
 };

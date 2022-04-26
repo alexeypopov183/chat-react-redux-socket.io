@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux";
 
 import {addMessage} from "../redux/actions";
 
-const Footer = ({userName}) => {
+const Footer = ({userName, img}) => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
   const [encodeImage, setEncodeImage] = useState(null);
@@ -14,6 +14,7 @@ const Footer = ({userName}) => {
     const socketMessage = {
       message: message,
       userName: userName,
+      img: img,
       uniqId: `${userName}:${Date.now()}`,
       encodeImage: encodeImage,
     };

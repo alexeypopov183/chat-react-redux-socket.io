@@ -3,8 +3,11 @@ export const userReducer = (state = {join: false}, action) => {
     case 'ADD_USER':
       return (
         {
-          join: action.payload.join,
-          user: action.payload.socketUser,
+          join: action.payload.join || state.join,
+          user: {
+            name: action.payload.socketUser,
+            img: action.payload.url || state.user.img
+          },
           users: [...action.payload.users]
         }
       )

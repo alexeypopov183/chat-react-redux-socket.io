@@ -29,10 +29,12 @@ app.post('/', (req, res) => {
 io.on('connection', (socket) => {
   socket.on('JOIN', (data) => {
     socket.join(data);
-    chat.get('users').set(socket.id, {name: data.userName, img: data.img});
+    console.log(data)
+    chat.get('users').set(socket.id, {name: data.userName});
     const users = [...chat.get('users').values()];
     const messages = [...chat.get('messages').values()];
     const join = true;
+    console.log(chat)
     io.sockets.emit('GET_DATA', users, messages, join);
   });
 

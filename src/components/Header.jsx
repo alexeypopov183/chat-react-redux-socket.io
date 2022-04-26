@@ -1,11 +1,9 @@
 import React from 'react';
 
-const Header = ({userName}) => {
+const Header = ({userName, img}) => {
   return (
     <header className="header">
-      <div className="header__logo">
-        <img src="" alt="img"/>
-      </div>
+      <img className="header__icon" src={img} alt="img"/>
       <div className="header__title">
         <span>{userName}</span>
       </div>

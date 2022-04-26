@@ -5,7 +5,7 @@ import {deleteMessage} from "../redux/actions";
 import socket from "../socket";
 
 const Message = ({messageProp, currentUser}) => {
-  const {userName, message, uniqId, encodeImage} = messageProp;
+  const {userName, message, uniqId, encodeImage, img} = messageProp;
   const dispatch = useDispatch();
 
   const deletedMessage = (id) => {
@@ -17,6 +17,7 @@ const Message = ({messageProp, currentUser}) => {
 
   return (
     <div className="message-block">
+      <img className="message-block__icon" src={img} alt=""/>
       <div className="message-block__title">
         {userName}
       </div>

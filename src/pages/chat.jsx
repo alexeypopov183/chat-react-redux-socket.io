@@ -1,10 +1,10 @@
 import React from 'react';
+import {useSelector} from "react-redux";
 
 import Header from "../components/Header";
-import Footer from "../components/Footer";
+import InputMessage from "../components/InputMessage";
 import ListNicknames from "../components/ListNicknames";
 import ListMessages from "../components/ListMessages";
-import {useSelector} from "react-redux";
 
 const Chat = () => {
   const {user, users} = useSelector(state => state.userReducer);
@@ -18,7 +18,7 @@ const Chat = () => {
         <ListNicknames users={users}/>
         <ListMessages userName={userName}/>
       </main>
-      <Footer img={img} userName={userName}/>
+      <InputMessage img={img} userName={userName}/>
     </div>
   );
 };

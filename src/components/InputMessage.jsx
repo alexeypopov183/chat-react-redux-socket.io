@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import socket from "../socket";
 import {useDispatch} from "react-redux";
 
 import {addMessage} from "../redux/actions";
 
-const Footer = ({userName, img}) => {
+const InputMessage = ({userName, img}) => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
   const [encodeImage, setEncodeImage] = useState(null);
+  const ref = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,22 +21,25 @@ const Footer = ({userName, img}) => {
     };
     swapMessages(socketMessage);
     setEncodeImage(null);
+    setMessage('');
   }
+
+  const swapMessages = (socketMessage) => {
+    socket.emit('MESSAGE', socketMessage);
+  };
+
   socket.on('MESSAGE', data => {
     dispatch(addMessage(data));
   });
-  const swapMessages = (socketMessage) => {
-    socket.emit('MESSAGE', socketMessage);
-  }
 
-  function encodeImageFileAsURL() {
-    const filesSelected = document.getElementById("inputFileToLoad").files;
+  const encodeImageFileAsURL = () => {
+    const filesSelected = ref.current.files;
     if (filesSelected.length > 0) {
       const fileToLoad = filesSelected[0];
       const fileReader = new FileReader();
       fileReader.onload = function(fileLoadedEvent) {
-        const srcData = fileLoadedEvent.target.result; // <--- data: base64
-        setEncodeImage(srcData)
+        const srcData = fileLoadedEvent.target.result;
+        setEncodeImage(srcData);
       }
       fileReader.readAsDataURL(fileToLoad);
     }
@@ -44,18 +48,20 @@ const Footer = ({userName, img}) => {
   return (
     <footer className="footer">
       <form className="footer__input" onSubmit={(e) => handleSubmit(e)}>
-        <input placeholder="Введите сообщение..."
-               type="text"
-               value={message}
-               onChange={(e) => setMessage(e.target.value)}
+        <input
+          placeholder="Введите сообщение..."
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
         />
-        <input id="inputFileToLoad"
-               type="file"
-               onChange={encodeImageFileAsURL}
+        <input
+          type="file"
+          onChange={encodeImageFileAsURL}
+          ref={ref}
         />
       </form>
     </footer>
   );
 };
 
-export default Footer;
+export default InputMessage;

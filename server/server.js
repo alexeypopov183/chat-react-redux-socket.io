@@ -13,10 +13,6 @@ app.use(express.json());
 
 const chat = new Map();
 
-app.get('/', (req, res) => {
-  res.json(chat)
-});
-
 app.post('/', (req, res) => {
   if (!chat.size) {
     chat
@@ -29,12 +25,10 @@ app.post('/', (req, res) => {
 io.on('connection', (socket) => {
   socket.on('JOIN', (data) => {
     socket.join(data);
-    console.log(data)
     chat.get('users').set(socket.id, {name: data.userName});
     const users = [...chat.get('users').values()];
     const messages = [...chat.get('messages').values()];
     const join = true;
-    console.log(chat)
     io.sockets.emit('GET_DATA', users, messages, join);
   });
 
@@ -47,10 +41,12 @@ io.on('connection', (socket) => {
   })
 
   socket.on('disconnect', () => {
-    if (chat.size) {
+    try {
       const user = chat.get('users').get(socket.id).name;
       chat.forEach(el => el.delete(socket.id));
       io.sockets.emit('CHANGE_DATA', user);
+    } catch (err) {
+      console.log(err);
     }
   });
 });

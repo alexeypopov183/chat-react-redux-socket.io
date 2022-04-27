@@ -1,8 +1,8 @@
 import React from "react";
+import {useSelector} from "react-redux";
 
 import Welcome from "./pages/welcome";
 import Chat from "./pages/chat";
-import {useSelector} from "react-redux";
 
 function App() {
 

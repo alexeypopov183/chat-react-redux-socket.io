@@ -1,8 +1,8 @@
 import React from 'react';
 import {useDispatch} from "react-redux";
+import socket from "../socket";
 
 import {deleteMessage} from "../redux/actions";
-import socket from "../socket";
 
 const Message = ({messageProp, currentUser}) => {
   const {userName, message, uniqId, encodeImage, img} = messageProp;
@@ -23,7 +23,7 @@ const Message = ({messageProp, currentUser}) => {
       </div>
       <div className="message-block__subtitle">
         <p>{message}</p>
-        {encodeImage && <img className="message-block__subtitle-img" src={encodeImage} alt="image"/>}
+        {encodeImage && <img className="message-block__subtitle-img" src={encodeImage} alt="load-img"/>}
         <div className="message-block__subtitle-close" onClick={() => deletedMessage(uniqId)}>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
             <path fillRule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>

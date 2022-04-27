@@ -27,14 +27,14 @@ const Welcome = () => {
     return (dispatch) => {
       fetch(`https://jsonplaceholder.typicode.com/photos/${randomNum()}`)
         .then(res => res.json())
-        .then(({url}) => dispatch(addUser({socketUser, url, users, join})))
+        .then(({url}) => dispatch(addUser({socketUser, url, users, join})));
     }
   }
 
   const getSocketUser = () => {
     const userName = getRandomName();
     return {
-      userName: userName
+      userName: userName,
     };
   }
 
@@ -42,8 +42,7 @@ const Welcome = () => {
     await axios.post('http://localhost:4000', socketUser);
     socket.emit('JOIN', socketUser);
     socket.on('GET_DATA', ( users, messages, join) => {
-      dispatch(addUser({socketUser, users, join}))
-      // dispatch(fetchFakeImg(socketUser, users, join));
+      dispatch(addUser({socketUser, users, join}));
       dispatch(addMessage(messages));
     });
     socket.on('CHANGE_DATA', (user) => {

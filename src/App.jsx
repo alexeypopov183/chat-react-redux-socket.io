@@ -5,8 +5,8 @@ import Welcome from "./pages/welcome";
 import Chat from "./pages/chat";
 
 function App() {
-
   const {join} = useSelector(state => state.userReducer)
+
   return (
     <>
       {join ? <Chat />

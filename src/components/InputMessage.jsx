@@ -1,43 +1,43 @@
 import React, {useRef, useState} from 'react';
 import socket from "../socket";
 import {useDispatch} from "react-redux";
-
 import {addMessage} from "../redux/actions";
 
 const InputMessage = ({userName, img}) => {
   const dispatch = useDispatch();
   const [message, setMessage] = useState('');
   const [encodeImage, setEncodeImage] = useState(null);
-  const ref = useRef();
+  const ref = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const socketMessage = {
-      message: message,
-      userName: userName,
-      img: img,
-      uniqId: `${userName}:${Date.now()}`,
-      encodeImage: encodeImage,
-    };
-    swapMessages(socketMessage);
-    setEncodeImage(null);
-    setMessage('');
+    if (message || encodeImage) {
+      const socketMessage = {
+        message: message,
+        userName: userName,
+        img: img,
+        uniqId: `${userName}:${Date.now()}`,
+        encodeImage: encodeImage,
+      };
+      dispatch(addMessage(socketMessage));
+      sendMessage(socketMessage);
+      setEncodeImage(null);
+      setMessage('');
+    } else {
+      alert('Вы не ввели сообщение!');
+    }
   }
 
-  const swapMessages = (socketMessage) => {
-    socket.emit('MESSAGE', socketMessage);
+  const sendMessage = (socketMessage) => {
+    socket.emit('ADD_MESSAGE', socketMessage);
   };
-
-  socket.on('MESSAGE', data => {
-    dispatch(addMessage(data));
-  });
 
   const encodeImageFileAsURL = () => {
     const filesSelected = ref.current.files;
     if (filesSelected.length > 0) {
       const fileToLoad = filesSelected[0];
       const fileReader = new FileReader();
-      fileReader.onload = function(fileLoadedEvent) {
+      fileReader.onload = (fileLoadedEvent)  => {
         const srcData = fileLoadedEvent.target.result;
         setEncodeImage(srcData);
       }
@@ -47,7 +47,7 @@ const InputMessage = ({userName, img}) => {
 
   return (
     <footer className="footer">
-      <form className="footer__input" onSubmit={(e) => handleSubmit(e)}>
+      <form className="footer__input" onSubmit={handleSubmit}>
         <input
           placeholder="Введите сообщение..."
           type="text"
@@ -56,6 +56,7 @@ const InputMessage = ({userName, img}) => {
         />
         <input
           type="file"
+          accept=".jpeg,.png,.gif,.svg"
           onChange={encodeImageFileAsURL}
           ref={ref}
         />

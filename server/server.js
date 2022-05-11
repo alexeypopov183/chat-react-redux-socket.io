@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require("path");
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
@@ -10,8 +11,14 @@ const io = new Server(server, {
 });
 app.use(require('cors')());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '../build')));
+
 
 const chat = new Map();
+
+app.get('/express_backend', (req, res) => {
+  res.send({ express: 'BACKEND IS CONNECTED TO REACT' });
+})
 
 app.post('/', (req, res) => {
   if (!chat.size) {
@@ -32,12 +39,14 @@ io.on('connection', (socket) => {
     io.sockets.emit('GET_DATA', users, messages, join);
   });
 
-  socket.on('MESSAGE', (data) => {
-    (typeof data === 'object')
-      ?  chat.get('messages').set(data.uniqId, data)
-      :  chat.get('messages').delete(data);
-    const messages = [...chat.get('messages').values()];
-    io.sockets.emit('MESSAGE', messages);
+  socket.on('ADD_MESSAGE', (data) => {
+    chat.get('messages').set(data.uniqId, data);
+    socket.broadcast.emit('ADD_MESSAGE', data);
+  });
+
+  socket.on('DELETE_MESSAGE', (data) => {
+    chat.get('messages').delete(data);
+    socket.broadcast.emit('DELETE_MESSAGE', data);
   })
 
   socket.on('disconnect', () => {
@@ -51,6 +60,8 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(4000, () => {
-  console.log('listening on *:4000');
+const PORT = process.env.PORT || 3001;
+
+server.listen(PORT, () => {
+  console.log(`listening on ${PORT}`);
 });

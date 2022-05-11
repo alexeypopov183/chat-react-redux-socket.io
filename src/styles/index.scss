@@ -1,5 +1,9 @@
 @import "variables";
 
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
 .welcome-block {
   display: grid;
   justify-content: center;
@@ -11,6 +15,8 @@
   background: $color-background;
   display: grid;
   grid-template-rows: 60px 400px 100px;
+  border: 3px solid $color-border;
+  border-radius: 10px;
 }
 .header {
   display: grid;
@@ -48,7 +54,7 @@
       align-items: center;
       border: 1px solid $color-border;
       max-width: 400px;
-      max-height: 500px;
+      max-height: 600px;
       margin: 0 5px;
       padding: 5px;
       border-radius: 10px 10px 10px 0;
@@ -58,8 +64,8 @@
         margin: 0 5px;
       }
       &-img {
-        max-height: 300px;
-        max-width: 300px;
+        height: 100px;
+        width: 100px;
       }
     }
   }
@@ -69,4 +75,14 @@
   display: grid;
   justify-content: center;
   align-items: center;
+  &__input {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+    height: 100px;
+    & input {
+      font-size: 16px;
+      width: 300px;
+    }
+  }
 }

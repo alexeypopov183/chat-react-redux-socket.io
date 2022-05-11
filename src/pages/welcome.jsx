@@ -1,54 +1,37 @@
 import React, {useEffect, useState} from 'react';
-import socket from "../socket";
 import axios from "axios";
 import {useDispatch} from "react-redux";
 
-import {addMessage, addUser, deleteUser} from "../redux/actions";
-import getRandomName from "../functions/getRandomName";
+import {getRandomName} from "../functions/getRandomName";
+import {fetchImg} from "../redux/asyncAction/fetchImg";
+import {swapSocketData}from "../functions/swapSocketData";
 
 const Welcome = () => {
   const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchFakeImg('', [], false));
+    dispatch(fetchImg());
   },[])
-
-  const openChat = () => {
-    setLoading(true);
-    swapData(getSocketUser());
-  };
-
-  const randomNum = () => {
-    return Math.floor(Math.random() * (50 - 1 + 1)) + 1;
-  }
-
-  const fetchFakeImg = (socketUser, users, join) => {
-    return (dispatch) => {
-      fetch(`https://jsonplaceholder.typicode.com/photos/${randomNum()}`)
-        .then(res => res.json())
-        .then(({url}) => dispatch(addUser({socketUser, url, users, join})));
-    }
-  }
 
   const getSocketUser = () => {
     const userName = getRandomName();
     return {
-      userName: userName,
+      userName
     };
-  }
+  };
+  const socketUser = getSocketUser();
 
-  const swapData = async (socketUser) => {
-    await axios.post('http://localhost:4000', socketUser);
-    socket.emit('JOIN', socketUser);
-    socket.on('GET_DATA', ( users, messages, join) => {
-      dispatch(addUser({socketUser, users, join}));
-      dispatch(addMessage(messages));
-    });
-    socket.on('CHANGE_DATA', (user) => {
-      dispatch(deleteUser(user));
-    })
-  }
+  const openChat = async () => {
+    setLoading(true);
+    try {
+      await axios.post('http://localhost:3001', socketUser);
+      swapSocketData(dispatch, socketUser);
+    } catch (e) {
+      console.log(e);
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="welcome-block">

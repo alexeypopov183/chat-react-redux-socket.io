@@ -16,7 +16,7 @@ const Chat = () => {
       <Header img={img} userName={userName}/>
       <main className="main">
         <ListNicknames users={users}/>
-        <ListMessages userName={userName}/>
+        <ListMessages userName={userName} />
       </main>
       <InputMessage img={img} userName={userName}/>
     </div>
